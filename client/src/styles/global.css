@@ -1,0 +1,26 @@
+/* global.css */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+}
+
+h2, h3, h4, h5 {
+  color: #333;
+}
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+}
+
+button:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}

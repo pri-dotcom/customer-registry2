@@ -1,0 +1,18 @@
+.feedback-container {
+  max-width: 600px;
+  margin: 40px auto;
+}
+
+.feedback-container input,
+.feedback-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.feedback-container textarea {
+  height: 100px;
+  resize: none;
+}

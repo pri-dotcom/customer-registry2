@@ -1,0 +1,80 @@
+/* login.css */
+
+body {
+  background-color: #f8f9fa; /* light gray background */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* full screen height */
+}
+
+.login-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  width: 350px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.login-card h1 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #0d6efd; /* Bootstrap primary blue */
+}
+
+.login-card h3 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.login-card form input,
+.login-card form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.login-card form input:focus,
+.login-card form select:focus {
+  border-color: #0d6efd;
+  outline: none;
+  box-shadow: 0 0 4px rgba(13, 110, 253, 0.4);
+}
+
+.login-card button {
+  width: 100%;
+  padding: 10px;
+  background-color: #0d6efd;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.login-card button:hover {
+  background-color: #0b5ed7;
+}
+
+.login-card p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.login-card a {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.login-card a:hover {
+  text-decoration: underline;
+}

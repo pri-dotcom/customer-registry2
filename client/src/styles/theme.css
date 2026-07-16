@@ -1,0 +1,60 @@
+:root {
+  /* Softer modern blue */
+  --primary: #4f8dfd;
+  --secondary: #7db7ff;
+
+  --success: #4caf50;
+  --warning: #ffc107;
+  --danger: #dc3545;
+
+  --text-dark: #333;
+  --bg-light: #f8f9fa;
+  --card-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+/* Primary (Blue) */
+.btn-primary {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  border: none;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #3f7ef8, #5fa8ff);
+  transform: scale(1.05);
+}
+
+/* Logout (Red) */
+.btn-danger {
+  background: linear-gradient(90deg, var(--danger), #ff6b6b);
+  border: none;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(90deg, #b02a37, #e63946);
+  transform: scale(1.05);
+}

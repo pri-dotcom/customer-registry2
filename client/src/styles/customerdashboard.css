@@ -1,0 +1,31 @@
+/* Dashboard Cards */
+
+.card-blue {
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: white;
+}
+
+.card-green {
+  background: linear-gradient(90deg, var(--success), #6ddf74);
+  color: white;
+}
+
+.card-yellow {
+  background: linear-gradient(90deg, var(--warning), #ffd54f);
+  color: #212529;
+}
+
+.card-blue,
+.card-green,
+.card-yellow {
+  border-radius: 10px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.card-blue:hover,
+.card-green:hover,
+.card-yellow:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
