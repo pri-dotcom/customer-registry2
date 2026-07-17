@@ -3,6 +3,7 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
+const { validateFeedback } = require("../middleware/validationMiddleware");
 
 const {
     submitFeedback,
@@ -22,6 +23,7 @@ router.post(
     "/",
     authMiddleware,
     authorizeRoles("customer"),
+    validateFeedback,
     submitFeedback
 );
 

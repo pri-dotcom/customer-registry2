@@ -1,3 +1,4 @@
+import { API_URL } from "../../config";
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import Navbar from "../../components/Navbar";
@@ -8,7 +9,7 @@ export default function Feedbacks() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/feedback", {
+        const response = await fetch(API_URL + "/feedback", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }

@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState, useRef } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -33,7 +34,7 @@ export default function RaiseComplaint() {
     }
 
     try {
-      const response = await fetch("http://localhost:5001/api/complaints", {
+      const response = await fetch(API_URL + "/complaints", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -8,13 +8,14 @@ const {
 } = require("../controllers/authController");
 
 const authMiddleware = require("../middleware/authMiddleware");
+const { validateRegister } = require("../middleware/validationMiddleware");
 
 // ==============================================
 // Authentication Routes
 // ==============================================
 
 // Customer Registration
-router.post("/register", register);
+router.post("/register", validateRegister, register);
 
 // Customer/Admin Login
 router.post("/login", login);

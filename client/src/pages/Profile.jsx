@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar"; 
 import Navbar from "../components/Navbar";
@@ -23,11 +24,25 @@ export default function Profile() {
   const [emailNotify, setEmailNotify] = useState(true);
   const [smsNotify, setSmsNotify] = useState(false);
 
+  // Customizable Fields State
+  const [customFields, setCustomFields] = useState([]);
+  const [userCustomFields, setUserCustomFields] = useState({});
+
   // Load Profile from backend on mount
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileAndFields = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/profile", {
+        const fieldsRes = await fetch(API_URL + "/admin/custom-fields", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        });
+        const fieldsData = await fieldsRes.json();
+        if (fieldsData.success) {
+          setCustomFields(fieldsData.data);
+        }
+
+        const response = await fetch(API_URL + "/profile", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -39,16 +54,19 @@ export default function Profile() {
           setPhone(data.data.phone || "");
           setAddress(data.data.address || "");
           setPhoto(data.data.profileImage || "");
+          setUserCustomFields(data.data.customFields || {});
           
           localStorage.setItem("customer_name", data.data.name || "");
           localStorage.setItem("customer_email", data.data.email || "");
           localStorage.setItem("customer_photo", data.data.profileImage || "");
+          localStorage.setItem("customer_phone", data.data.phone || "");
+          localStorage.setItem("customer_address", data.data.address || "");
         }
       } catch (error) {
         console.error(error);
       }
     };
-    fetchProfile();
+    fetchProfileAndFields();
   }, []);
 
   // Dynamic Layout Color Themes
@@ -80,7 +98,7 @@ export default function Profile() {
 
   const handleSaveChanges = async () => {
     try {
-      const response = await fetch("http://localhost:5001/api/profile", {
+      const response = await fetch(API_URL + "/profile", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -90,7 +108,8 @@ export default function Profile() {
           name: fullName,
           phone,
           address,
-          profileImage: photo
+          profileImage: photo,
+          customFields: userCustomFields
         })
       });
       const data = await response.json();
@@ -124,7 +143,7 @@ export default function Profile() {
       return;
     }
     try {
-      const response = await fetch("http://localhost:5001/api/profile/change-password", {
+      const response = await fetch(API_URL + "/profile/change-password", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -154,7 +173,7 @@ export default function Profile() {
   const handleDeleteAccount = async () => {
     if (window.confirm("Are you sure you want to permanently erase your profile registry?")) {
       try {
-        const response = await fetch("http://localhost:5001/api/profile", {
+        const response = await fetch(API_URL + "/profile", {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -265,6 +284,28 @@ export default function Profile() {
                         <label style={{ display: "block", fontSize: "13px", fontWeight: "600", color: colors.textSub, marginBottom: "8px" }}>Address</label>
                         <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: `1px solid ${colors.inputBorder}`, color: colors.textMain, backgroundColor: colors.inputBg, fontSize: "14px", boxSizing: "border-box" }} />
                       </div>
+                      
+                      {customFields.length > 0 && (
+                        <div style={{ gridColumn: "1 / span 2", borderTop: `1px solid ${colors.border}`, paddingTop: "24px", marginTop: "8px" }}>
+                          <h4 style={{ fontSize: "14px", fontWeight: "700", color: colors.textMain, margin: "0 0 16px 0" }}>Additional Information</h4>
+                          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "24px" }}>
+                            {customFields.map((field) => (
+                              <div key={field._id}>
+                                <label style={{ display: "block", fontSize: "13px", fontWeight: "600", color: colors.textSub, marginBottom: "8px" }}>
+                                  {field.name} {field.isRequired && <span style={{ color: "#ef4444" }}>*</span>}
+                                </label>
+                                <input
+                                  type={field.type === "number" ? "number" : field.type === "date" ? "date" : "text"}
+                                  value={userCustomFields[field.name] || ""}
+                                  onChange={(e) => setUserCustomFields({ ...userCustomFields, [field.name]: e.target.value })}
+                                  required={field.isRequired}
+                                  style={{ width: "100%", padding: "12px 14px", borderRadius: "10px", border: `1px solid ${colors.inputBorder}`, color: colors.textMain, backgroundColor: colors.inputBg, fontSize: "14px", boxSizing: "border-box" }}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     <div style={{ display: "flex", justifyContent: "flex-end" }}>

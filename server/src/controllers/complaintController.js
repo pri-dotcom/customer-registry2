@@ -425,6 +425,7 @@ const updateComplaintStatus = async (req, res) => {
         }
 
         if (
+            req.user.role === "agent" &&
             complaint.assignedAgent &&
             complaint.assignedAgent.toString() !== req.user._id.toString()
         ) {
@@ -435,6 +436,10 @@ const updateComplaintStatus = async (req, res) => {
         }
 
         complaint.status = status;
+        if (status === "Resolved") {
+            complaint.resolution = req.body.resolution || "";
+            complaint.resolvedAt = new Date();
+        }
 
         await complaint.save();
 

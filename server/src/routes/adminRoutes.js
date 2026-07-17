@@ -12,7 +12,12 @@ const {
     getRecentComplaints,
     deleteCustomer,
     dashboardCharts,
-    getAllCustomers
+    getAllCustomers,
+    getCustomFields,
+    createCustomField,
+    deleteCustomField,
+    getCustomerById,
+    updateCustomer
 } = require("../controllers/adminController");
 
 // ==============================================
@@ -89,6 +94,50 @@ router.delete(
     authMiddleware,
     authorizeRoles("admin"),
     deleteCustomer
+);
+
+// Get Customer Details (Admin and Agent)
+router.get(
+    "/customer/:id",
+    authMiddleware,
+    authorizeRoles("admin", "agent"),
+    getCustomerById
+);
+
+// Update Customer Details (Admin and Agent)
+router.put(
+    "/customer/:id",
+    authMiddleware,
+    authorizeRoles("admin", "agent"),
+    updateCustomer
+);
+
+// ==============================================
+// CUSTOM FIELD CONFIGURATION
+// ==============================================
+
+// Get Custom Fields (Admins, Agents, and Customers)
+router.get(
+    "/custom-fields",
+    authMiddleware,
+    authorizeRoles("admin", "agent", "customer"),
+    getCustomFields
+);
+
+// Create Custom Field (Admin)
+router.post(
+    "/custom-fields",
+    authMiddleware,
+    authorizeRoles("admin"),
+    createCustomField
+);
+
+// Delete Custom Field (Admin)
+router.delete(
+    "/custom-fields/:id",
+    authMiddleware,
+    authorizeRoles("admin"),
+    deleteCustomField
 );
 
 module.exports = router;

@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -12,7 +13,7 @@ export default function Dashboard() {
    const isAdm = localStorage.getItem("role") === "admin";
    const fetchComplaints = async () => {
      try {
-       const url = isAdm ? "http://localhost:5001/api/complaints" : "http://localhost:5001/api/complaints/my";
+       const url = isAdm ? API_URL + "/complaints" : API_URL + "/complaints/my";
        const response = await fetch(
          url,
          {
@@ -37,7 +38,7 @@ export default function Dashboard() {
 
    const fetchCustomersList = async () => {
      try {
-       const response = await fetch("http://localhost:5001/api/admin/customers", {
+       const response = await fetch(API_URL + "/admin/customers", {
          headers: {
            Authorization: `Bearer ${localStorage.getItem("token")}`
          }
@@ -60,7 +61,7 @@ export default function Dashboard() {
  const handleDeleteCustomer = async (id) => {
    if (window.confirm("Are you sure you want to delete this customer registry?")) {
      try {
-       const response = await fetch(`http://localhost:5001/api/admin/customer/${id}`, {
+       const response = await fetch(`${API_URL}/admin/customer/${id}`, {
          method: "DELETE",
          headers: {
            Authorization: `Bearer ${localStorage.getItem("token")}`

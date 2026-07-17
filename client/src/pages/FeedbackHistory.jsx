@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -9,7 +10,7 @@ export default function FeedbackHistory({ userName }) {
     const fetchHistory = async () => {
       try {
         const isAdmin = localStorage.getItem("role") === "admin";
-        const url = isAdmin ? "http://localhost:5001/api/feedback" : "http://localhost:5001/api/feedback/my";
+        const url = isAdmin ? API_URL + "/feedback" : API_URL + "/feedback/my";
         const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`

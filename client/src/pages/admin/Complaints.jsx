@@ -1,3 +1,4 @@
+import { API_URL } from "../../config";
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import Navbar from "../../components/Navbar";
@@ -13,7 +14,7 @@ export default function Complaints() {
 
   const fetchData = async () => {
     try {
-      const resComplaints = await fetch("http://localhost:5001/api/complaints", {
+      const resComplaints = await fetch(API_URL + "/complaints", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -23,7 +24,7 @@ export default function Complaints() {
         setComplaints(dataComplaints.data);
       }
 
-      const resAgents = await fetch("http://localhost:5001/api/agents", {
+      const resAgents = await fetch(API_URL + "/agents", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -33,7 +34,7 @@ export default function Complaints() {
         setAgents(dataAgents.data);
       }
 
-      const resCustomers = await fetch("http://localhost:5001/api/admin/customers", {
+      const resCustomers = await fetch(API_URL + "/admin/customers", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
@@ -54,7 +55,7 @@ export default function Complaints() {
   const handleAssignAgent = async (complaintId, agentId) => {
     if (!agentId) return;
     try {
-      const response = await fetch(`http://localhost:5001/api/complaints/${complaintId}/assign`, {
+      const response = await fetch(`${API_URL}/complaints/${complaintId}/assign`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

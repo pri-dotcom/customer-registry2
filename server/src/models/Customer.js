@@ -44,6 +44,12 @@ const customerSchema = new mongoose.Schema(
             default: ""
         },
 
+        customFields: {
+            type: Map,
+            of: String,
+            default: {}
+        },
+
         isActive: {
             type: Boolean,
             default: true

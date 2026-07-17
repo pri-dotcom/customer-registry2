@@ -1,4 +1,7 @@
 const Communication = require("../models/Communication");
+const Admin = require("../models/Admin");
+const Agent = require("../models/Agent");
+const Customer = require("../models/Customer");
 
 // ==============================================
 // Send Message
@@ -15,10 +18,27 @@ const sendMessage = async (req, res) => {
             });
         }
 
+        const senderRole = req.user.role;
+        let receiverRole;
+        if (await Admin.exists({ _id: receiver })) {
+            receiverRole = "admin";
+        } else if (await Agent.exists({ _id: receiver })) {
+            receiverRole = "agent";
+        } else if (await Customer.exists({ _id: receiver })) {
+            receiverRole = "customer";
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid receiver ID."
+            });
+        }
+
         const newMessage = await Communication.create({
             complaint: complaintId,
-            sender: req.user.id,
+            sender: req.user._id,
+            senderRole,
             receiver,
+            receiverRole,
             message
         });
 

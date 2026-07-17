@@ -1,3 +1,4 @@
+import { API_URL } from "../../config";
 import React, { useState, useEffect } from "react";
 import AgentSidebar from "../../components/AgentSidebar";
 import Navbar from "../../components/Navbar";
@@ -15,7 +16,7 @@ export default function AgentProfile() {
   useEffect(() => {
     const fetchMe = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/auth/me", {
+        const response = await fetch(API_URL + "/auth/me", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -51,14 +52,36 @@ export default function AgentProfile() {
     }
   };
 
-  const handleSaveProfile = () => {
-    localStorage.setItem("agent_name", name);
-    localStorage.setItem("agent_empid", empId);
-    localStorage.setItem("agent_email", email);
-    localStorage.setItem("agent_dept", dept);
-    localStorage.setItem("agent_photo", photo);
-    setIsEditing(false);
-    window.location.reload(); // Refresh to broadcast changes to the Navbar immediately
+  const handleSaveProfile = async () => {
+    try {
+      const response = await fetch(API_URL + "/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify({
+          name,
+          department: dept,
+          profileImage: photo
+        })
+      });
+      const data = await response.json();
+      if (data.success) {
+        localStorage.setItem("agent_name", name);
+        localStorage.setItem("agent_email", email);
+        localStorage.setItem("agent_photo", photo);
+        localStorage.setItem("agent_dept", dept);
+        setIsEditing(false);
+        alert("Profile updated successfully!");
+        window.location.reload(); // Refresh to broadcast changes to the Navbar immediately
+      } else {
+        alert(data.message || "Failed to update profile.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error saving profile details.");
+    }
   };
 
   return (

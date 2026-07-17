@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
@@ -17,7 +18,7 @@ export default function Feedback({ userName }) {
   useEffect(() => {
     const fetchComplaints = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/complaints/my", {
+        const response = await fetch(API_URL + "/complaints/my", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -60,7 +61,7 @@ export default function Feedback({ userName }) {
     const agentId = compObj?.assignedAgent?._id || compObj?.assignedAgent || null;
 
     try {
-      const response = await fetch("http://localhost:5001/api/feedback", {
+      const response = await fetch(API_URL + "/feedback", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

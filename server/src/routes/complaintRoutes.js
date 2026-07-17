@@ -3,6 +3,7 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
+const { validateComplaint } = require("../middleware/validationMiddleware");
 
 const {
     createComplaint,
@@ -25,6 +26,7 @@ router.post(
     "/",
     authMiddleware,
     authorizeRoles("customer"),
+    validateComplaint,
     createComplaint
 );
 
@@ -34,6 +36,14 @@ router.get(
     authMiddleware,
     authorizeRoles("customer"),
     getMyComplaints
+);
+
+// View Assigned Complaints (Placed before /:id to prevent route masking)
+router.get(
+    "/assigned/list",
+    authMiddleware,
+    authorizeRoles("agent"),
+    getAssignedComplaints
 );
 
 // View Complaint Details
@@ -92,13 +102,7 @@ router.patch(
 // AGENT ROUTES
 // ==============================================
 
-// View Assigned Complaints
-router.get(
-    "/assigned/list",
-    authMiddleware,
-    authorizeRoles("agent"),
-    getAssignedComplaints
-);
+
 
 // Resolve Complaint
 router.patch(

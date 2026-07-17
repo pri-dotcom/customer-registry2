@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,12 +21,12 @@ const handleLogin = async (e) => {
 
     if(role === "agent"){
 
-      url = "http://localhost:5001/api/auth/agent-login";
+      url = API_URL + "/auth/agent-login";
 
     }
     else{
 
-      url = "http://localhost:5001/api/auth/login";
+      url = API_URL + "/auth/login";
 
     }
 

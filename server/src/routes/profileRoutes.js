@@ -20,7 +20,7 @@ const {
 router.get(
     "/",
     authMiddleware,
-    authorizeRoles("customer"),
+    authorizeRoles("customer", "agent", "admin"),
     getProfile
 );
 
@@ -28,7 +28,7 @@ router.get(
 router.put(
     "/",
     authMiddleware,
-    authorizeRoles("customer"),
+    authorizeRoles("customer", "agent", "admin"),
     updateProfile
 );
 
@@ -36,7 +36,7 @@ router.put(
 router.patch(
     "/change-password",
     authMiddleware,
-    authorizeRoles("customer"),
+    authorizeRoles("customer", "agent", "admin"),
     changePassword
 );
 
@@ -44,7 +44,7 @@ router.patch(
 router.patch(
     "/update-email",
     authMiddleware,
-    authorizeRoles("customer"),
+    authorizeRoles("customer", "agent", "admin"),
     updateEmail
 );
 
@@ -52,7 +52,7 @@ router.patch(
 router.delete(
     "/",
     authMiddleware,
-    authorizeRoles("customer"),
+    authorizeRoles("customer", "agent", "admin"),
     deleteAccount
 );
 

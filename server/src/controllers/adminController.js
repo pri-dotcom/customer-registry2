@@ -2,6 +2,7 @@ const Admin = require("../models/Admin");
 const Customer = require("../models/Customer");
 const Agent = require("../models/Agent");
 const Complaint = require("../models/Complaint");
+const CustomField = require("../models/CustomField");
 
 const bcrypt = require("bcryptjs");
 
@@ -353,6 +354,143 @@ const getAllCustomers = async (req, res) => {
     }
 };
 
+const getCustomFields = async (req, res) => {
+    try {
+        const fields = await CustomField.find().sort({ createdAt: 1 });
+        return res.status(200).json({
+            success: true,
+            data: fields
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+};
+
+const createCustomField = async (req, res) => {
+    try {
+        const { name, type, isRequired } = req.body;
+        if (!name) {
+            return res.status(400).json({
+                success: false,
+                message: "Field name is required."
+            });
+        }
+
+        const existingField = await CustomField.findOne({ name });
+        if (existingField) {
+            return res.status(409).json({
+                success: false,
+                message: "A field with this name already exists."
+            });
+        }
+
+        const newField = await CustomField.create({
+            name,
+            type: type || "text",
+            isRequired: isRequired || false
+        });
+
+        return res.status(201).json({
+            success: true,
+            message: "Custom field created successfully.",
+            data: newField
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+};
+
+const deleteCustomField = async (req, res) => {
+    try {
+        const field = await CustomField.findById(req.params.id);
+        if (!field) {
+            return res.status(404).json({
+                success: false,
+                message: "Custom field not found."
+            });
+        }
+
+        await Customer.updateMany({}, { $unset: { [`customFields.${field.name}`]: "" } });
+        await field.deleteOne();
+
+        return res.status(200).json({
+            success: true,
+            message: "Custom field deleted successfully."
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+};
+
+const getCustomerById = async (req, res) => {
+    try {
+        const customer = await Customer.findById(req.params.id).select("-password");
+        if (!customer) {
+            return res.status(404).json({
+                success: false,
+                message: "Customer not found."
+            });
+        }
+        return res.status(200).json({
+            success: true,
+            data: customer
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+};
+
+const updateCustomer = async (req, res) => {
+    try {
+        const { name, phone, address, customFields, isActive } = req.body;
+        const customer = await Customer.findById(req.params.id);
+        if (!customer) {
+            return res.status(404).json({
+                success: false,
+                message: "Customer not found."
+            });
+        }
+
+        customer.name = name || customer.name;
+        customer.phone = phone || customer.phone;
+        customer.address = address !== undefined ? address : customer.address;
+        customer.isActive = isActive !== undefined ? isActive : customer.isActive;
+        if (customFields) {
+            customer.customFields = customFields;
+        }
+
+        await customer.save();
+
+        return res.status(200).json({
+            success: true,
+            message: "Customer updated successfully.",
+            data: customer
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal Server Error"
+        });
+    }
+};
+
 // ==============================================
 // Export Controllers
 // ==============================================
@@ -364,5 +502,10 @@ module.exports = {
     getRecentComplaints,
     deleteCustomer,
     dashboardCharts,
-    getAllCustomers
+    getAllCustomers,
+    getCustomFields,
+    createCustomField,
+    deleteCustomField,
+    getCustomerById,
+    updateCustomer
 };

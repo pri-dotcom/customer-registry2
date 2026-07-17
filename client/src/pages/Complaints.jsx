@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
@@ -29,7 +30,7 @@ export default function Complaints() {
   useEffect(() => {
     const fetchLatestComplaint = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/complaints/my", {
+        const response = await fetch(API_URL + "/complaints/my", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -58,7 +59,7 @@ export default function Complaints() {
           setTimelineEvents(milestones);
 
           // Fetch chat logs
-          const chatResponse = await fetch(`http://localhost:5001/api/messages/${latest._id}`, {
+          const chatResponse = await fetch(`${API_URL}/messages/${latest._id}`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`
             }
@@ -97,7 +98,7 @@ export default function Complaints() {
     }
 
     try {
-      const response = await fetch("http://localhost:5001/api/messages", {
+      const response = await fetch(API_URL + "/messages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +129,7 @@ export default function Complaints() {
 
   const handleSaveEdit = async () => {
     try {
-      const response = await fetch(`http://localhost:5001/api/complaints/${complaintData._id}`, {
+      const response = await fetch(`${API_URL}/complaints/${complaintData._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -163,7 +164,7 @@ export default function Complaints() {
   // --- EXECUTE ACTION FOR CANCELLING COMPLAINT ---
   const handleConfirmCancelComplaint = async () => {
     try {
-      const response = await fetch(`http://localhost:5001/api/complaints/${complaintData._id}`, {
+      const response = await fetch(`${API_URL}/complaints/${complaintData._id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`

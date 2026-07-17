@@ -1,3 +1,4 @@
+import { API_URL } from "../../config";
 import React, { useState, useEffect } from "react";
 import AgentSidebar from "../../components/AgentSidebar";
 import Navbar from "../../components/Navbar";
@@ -14,7 +15,7 @@ export default function AgentDashboard() {
   useEffect(() => {
     const fetchDashboard = async () => {
       try {
-        const response = await fetch("http://localhost:5001/api/dashboard/agent", {
+        const response = await fetch(API_URL + "/dashboard/agent", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }

@@ -1,3 +1,4 @@
+import { API_URL } from "../config";
 import React, { useState, useEffect } from "react";
 
 export default function ComplaintTable({complaints=[]}) {
@@ -10,7 +11,7 @@ export default function ComplaintTable({complaints=[]}) {
     if (isAdmin) {
       const fetchAgents = async () => {
         try {
-          const response = await fetch("http://localhost:5001/api/agents", {
+          const response = await fetch(API_URL + "/agents", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`
             }
@@ -30,7 +31,7 @@ export default function ComplaintTable({complaints=[]}) {
   const handleAssignAgent = async (complaintId, agentId) => {
     if (!agentId) return;
     try {
-      const response = await fetch(`http://localhost:5001/api/complaints/${complaintId}/assign`, {
+      const response = await fetch(`${API_URL}/complaints/${complaintId}/assign`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

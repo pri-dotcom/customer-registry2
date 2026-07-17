@@ -1,3 +1,4 @@
+import { API_URL } from "../../config";
 import React, { useState, useEffect } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import Navbar from "../../components/Navbar";
@@ -14,7 +15,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const resStats = await fetch("http://localhost:5001/api/admin/statistics", {
+        const resStats = await fetch(API_URL + "/admin/statistics", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
@@ -24,7 +25,7 @@ export default function AdminDashboard() {
           setStats(dataStats.data);
         }
 
-        const resRecent = await fetch("http://localhost:5001/api/admin/recent-complaints", {
+        const resRecent = await fetch(API_URL + "/admin/recent-complaints", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
