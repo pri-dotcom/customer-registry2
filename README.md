@@ -11,7 +11,7 @@ The Customer Care Registry enables support organizations to streamline ticket qu
 *   **Priyanka Degala** (Team Lead)
 *   **Chandrakala Marri** (Member)
 *   **Eswarasai Marre** (Member)
-*   **Mandhapati Triloka Pavani** (Member)
+*   **Triloka Pavani Mandhapati** (Member)
 *   **Santhosh Nikhil Moka** (Member)
 
 ## Project Statistics
